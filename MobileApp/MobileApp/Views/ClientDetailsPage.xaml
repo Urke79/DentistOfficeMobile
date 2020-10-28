@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Screens.ClientDetailsPage"
+             Title="{Binding SelectedClient.Name}">
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem 
+                 Text="Intervencije"
+                 Order="Primary"
+                 Priority="0" 
+                 Command="{Binding ShowInterventionsCommand}"/>
+
+        <ToolbarItem 
+                 Text="Obriši"
+                 Order="Primary"
+                 Priority="0"
+                 Command="{Binding DeleteClientCommand}"/>
+
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <TableView Intent="Form">
+            <TableRoot>
+                <TableSection>
+
+                    <EntryCell Label="Ime i prezime" Text="{Binding SelectedClient.Name}" />
+                    <EntryCell Label="Telefon" Text="{Binding SelectedClient.Phone}" Keyboard="Numeric" />
+                    <EntryCell Label="Adresa" Text="{Binding SelectedClient.Adress}"  />
+                    <EntryCell Label="Napomena" Text="{Binding SelectedClient.Note}"  />
+                    <ViewCell>
+                        <Button Text="Sačuvaj" Command="{Binding AddClientCommand}" />
+                    </ViewCell>
+
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </ContentPage.Content>
+</ContentPage>

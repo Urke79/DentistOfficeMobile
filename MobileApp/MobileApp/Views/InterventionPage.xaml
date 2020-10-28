@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.InterventionPage"
+             Title="{Binding ContextClient.Name}">
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="Dodaj"
+                 Order="Primary"
+                 Priority="0" 
+                 Command="{Binding AddInterventionCommand}"/>
+
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <ListView ItemSelected="ClientsInterventionsListView_ItemSelected"
+                  SelectedItem="{Binding SelectedIntervention, Mode=TwoWay}"
+                  HasUnevenRows="True"
+                  ItemsSource="{Binding Interventions}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <StackLayout Orientation="Vertical">
+                                
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span TextColor="Black" FontSize="20"  FontAttributes="Bold" Text="Opis: "/>
+                                            <Span FontSize="20" Text="{Binding InterventionDescription}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span TextColor="Black"  FontSize="20" FontAttributes="Bold" Text="Datum: "/>
+                                            <Span FontSize="20" Text="{Binding Date, StringFormat='{0:MMMM dd, yyyy}'}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span TextColor="Black" FontSize="20" FontAttributes="Bold" Text="Napomena: "/>
+                                            <Span FontSize="20" Text="{Binding Note}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span TextColor="Black" FontSize="20" FontAttributes="Bold" Text="Cena: "/>
+                                            <Span FontSize="20" Text="{Binding Price, StringFormat='{}{0:c}'}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            
+                            </StackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+       
+    </ContentPage.Content>
+</ContentPage>
