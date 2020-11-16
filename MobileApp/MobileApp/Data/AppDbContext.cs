@@ -8,14 +8,17 @@ namespace MobileApp.Data
     public class AppDbContext : DbContext
     {
 
+        public AppDbContext()
+        {
+            Database.EnsureCreated();
+        }
+
         public DbSet<Client> Clients { get; set; }
         public DbSet<Intervention> Interventions { get; set; }
 
-
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Filename={Consts.dbPath}");
+            optionsBuilder.UseSqlite($"Filename={Consts.dbPath}");       
         }
     }
 

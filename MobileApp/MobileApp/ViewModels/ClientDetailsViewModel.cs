@@ -65,8 +65,11 @@ namespace MobileApp.ViewModels
 
         private async void SaveClient()
         {
-           // TO DO Validations
-
+            if (string.IsNullOrEmpty(SelectedClient.Name))
+            {
+                await PageService.DisplayAlert("Greška", "Morate uneti ime pacijenta!", "OK");
+                return;
+            }
             if (SelectedClient.Id == 0)
             {
                 _repository.SaveEntity(SelectedClient);
