@@ -1,10 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:MobileApp"
              x:Class="MobileApp.Screens.ClientsPage"
              Title="Pacijenti">
 
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+           
+            
+            <DataTemplate x:Key="evenTemplate">
+                <ViewCell >
+                    <Label Text="{Binding Name}" BackgroundColor="LightGray" Style="{StaticResource label}"/>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="unevenTemplate">
+                <ViewCell>
+                    <Label Text="{Binding Name}" BackgroundColor="White" Style="{StaticResource label}" />
+                </ViewCell>
+            </DataTemplate>
+
+            <local:AlternateColorDataTemplateSelector x:Key="alternateColorDataTemplateSelector"
+                EvenTemplate="{StaticResource evenTemplate}"
+                UnevenTemplate="{StaticResource unevenTemplate}" />
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
+
     <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="Izveštaj"
+                 Order="Primary"
+                 Priority="0" 
+                 Command="{Binding ReportCommand}"/>
+
         <ToolbarItem Text="Dodaj"
                  Order="Primary"
                  Priority="0" 
@@ -17,13 +47,9 @@
 
             <ListView ItemsSource="{Binding Clients}"
                   ItemSelected="OnClientSelected"
-                  SelectedItem="{Binding SelectedClient, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Name}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                  SelectedItem="{Binding SelectedClient, Mode=TwoWay}"
+                      ItemTemplate="{StaticResource alternateColorDataTemplateSelector}" />
+
         </StackLayout>
     </ContentPage.Content>
 

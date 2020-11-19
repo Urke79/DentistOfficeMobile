@@ -2,6 +2,7 @@
 using MobileApp.Data;
 using MobileApp.Data.Interfaces;
 using MobileApp.Screens;
+using MobileApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,6 +27,8 @@ namespace MobileApp.ViewModels
         public ObservableCollection<Client> Clients { get; set; } = new ObservableCollection<Client>();
         public Client SelectedClient { get; set; }
         public ICommand AddClientCommand { get; private set; }
+
+        public ICommand ReportCommand { get; private set; }
         public ICommand SelectClientCommand { get; private set; }
 
         public ClientsViewModel(IBaseRepository<Client> repository, IPageService pageService)
@@ -35,7 +38,13 @@ namespace MobileApp.ViewModels
 
             // Commands with and without parameter
             AddClientCommand = new Command(AddNewClient);
+            ReportCommand = new Command(ShowReport);
             SelectClientCommand = new Command<Client>(async client => await SelectItem(client, c => new ClientDetailsPage(c)));
+        }
+
+        private async void ShowReport(object obj)
+        {
+            await PageService.PushAsync(new ReportPage());
         }
 
         public void RefreshClientList(string searchParameter = null)

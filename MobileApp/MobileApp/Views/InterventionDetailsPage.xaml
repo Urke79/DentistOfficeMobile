@@ -12,20 +12,38 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-       
+
         <TableView Intent="Form">
             <TableRoot>
                 <TableSection>
 
                     <ViewCell>
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Datum"></Label>
-                            <DatePicker  x:Name="datePicker" Date="{Binding SelectedIntervention.Date}" Format="d MMM yyyy"></DatePicker>
+                            <Label Text="Datum" Style="{StaticResource label}" />
+                            <DatePicker Date="{Binding SelectedIntervention.Date}" Format="d MMM yyyy" />
                         </StackLayout>
                     </ViewCell>
-                    <EntryCell Label="Intervencija" Text="{Binding SelectedIntervention.InterventionDescription}" />
-                    <EntryCell Label="Napomena" Text="{Binding SelectedIntervention.Note}"  />
-                    <EntryCell Label="Cena" Text="{Binding SelectedIntervention.Price}"  />
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                            <Label Text="Intervencija" Style="{StaticResource label}" />
+                            <Entry Text="{Binding SelectedIntervention.InterventionDescription}" />
+                        </StackLayout>
+                    </ViewCell>
+
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                            <Label Text="Napomena" Style="{StaticResource label}" />
+                            <Entry Text="{Binding SelectedIntervention.Note}" />
+                        </StackLayout>
+                    </ViewCell>
+
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                            <Label Text="Cena" Style="{StaticResource label}" />
+                            <Entry Text="{Binding SelectedIntervention.Price}" />
+                        </StackLayout>
+                    </ViewCell>
+
                     <ViewCell>
                         <Button Text="Sačuvaj" Command="{Binding SaveInterventionCommand}" />
                     </ViewCell>
@@ -33,6 +51,6 @@
                 </TableSection>
             </TableRoot>
         </TableView>
-        
+
     </ContentPage.Content>
 </ContentPage>

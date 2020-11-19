@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.ReportPage"
+             Title="Mesečni izveštaj">
+    <ContentPage.Content>
+        <StackLayout>
+            <TableView Intent="Form">
+                <TableRoot>
+                    <TableSection>
+
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Datum od"></Label>
+                                <DatePicker Date="{Binding DateFrom}" Format="d MMM yyyy"></DatePicker>
+                            </StackLayout>
+                        </ViewCell>
+
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Datum do"></Label>
+                                <DatePicker Date="{Binding DateTo}" Format="d MMM yyyy"></DatePicker>
+                            </StackLayout>
+                        </ViewCell>
+                        
+                        <ViewCell>
+                            <Button Text="Prikaži" Command="{Binding ShowPayedAmmountCommand}" />
+                        </ViewCell>
+
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+            <Label Text="{Binding PayedAmmount}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" TextDecorations="Underline" FontSize="Title" />
+
+            <Label Text="{Binding MyCut}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" TextDecorations="Underline" FontSize="Title" />
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -34,6 +34,7 @@ namespace MobileApp
 
 
             containerBuilder.RegisterType<InterventionRepository>().As<IInterventionRepository>().SingleInstance();
+            containerBuilder.RegisterType<ReportRepository>().As<IReportRepository>().SingleInstance();
             containerBuilder.RegisterType<PageService>().As<IPageService>().SingleInstance();
 
            // containerBuilder.RegisterType<AppDbContext>().InstancePerLifetimeScope();
@@ -43,7 +44,8 @@ namespace MobileApp
             containerBuilder.RegisterType<ClientDetailsViewModel>();
             containerBuilder.RegisterType<InterventionsViewModel>();
             containerBuilder.RegisterType<InterventionDetailsViewModel>();
-            
+            containerBuilder.RegisterType<ReportViewModel>();
+
             container = containerBuilder.Build();
 
             var csl = new AutofacServiceLocator(container);

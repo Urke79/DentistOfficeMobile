@@ -1,5 +1,6 @@
 ﻿using MobileApp.Data;
 using MobileApp.Data.Interfaces;
+using System;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -19,6 +20,7 @@ namespace MobileApp.ViewModels
             {
                 SetValue(ref _selectedClient, value);
                 (DeleteClientCommand as Command).ChangeCanExecute();
+                (ShowInterventionsCommand as Command).ChangeCanExecute();
             }
         }
 
@@ -36,7 +38,17 @@ namespace MobileApp.ViewModels
             // There's a complicated logic behind this command that does this
             // More here:  https://stackoverflow.com/questions/48887917/toolbaritem-isenabled-property-is-available-in-xaml-not-code
             DeleteClientCommand = new Command(DeleteClient, DeleteClientCanExecute);
-            ShowInterventionsCommand = new Command(ShowInterventions);
+            ShowInterventionsCommand = new Command(ShowInterventions, ShowInterventionsCanExecute);
+        }
+
+        private bool ShowInterventionsCanExecute(object arg)
+        {
+            if (SelectedClient != null)
+            {
+                return SelectedClient.Id != 0;
+            }
+
+            return true;
         }
 
         private async void DeleteClient(object obj)
@@ -58,7 +70,7 @@ namespace MobileApp.ViewModels
             return true;           
         }
 
-        private async void ShowInterventions()
+        private async void ShowInterventions(object obj)
         {
             await PageService.PushAsync(new InterventionPage(SelectedClient));
         }
