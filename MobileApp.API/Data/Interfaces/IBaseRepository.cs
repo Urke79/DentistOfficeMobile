@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MobileApp.Data.Interfaces
+namespace MobileApp.API.Data.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {

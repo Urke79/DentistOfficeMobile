@@ -19,31 +19,17 @@
 
                     <ViewCell>
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Datum" Style="{StaticResource label}" />
+                            <Label Text="Datum" />
                             <DatePicker Date="{Binding SelectedIntervention.Date}" Format="d MMM yyyy" />
                         </StackLayout>
                     </ViewCell>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                            <Label Text="Intervencija" Style="{StaticResource label}" />
-                            <Entry Text="{Binding SelectedIntervention.InterventionDescription}" />
-                        </StackLayout>
-                    </ViewCell>
 
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                            <Label Text="Napomena" Style="{StaticResource label}" />
-                            <Entry Text="{Binding SelectedIntervention.Note}" />
-                        </StackLayout>
-                    </ViewCell>
+                    <EntryCell Label="Intervencija" Text="{Binding SelectedIntervention.InterventionDescription}" />
 
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                            <Label Text="Cena" Style="{StaticResource label}" />
-                            <Entry Text="{Binding SelectedIntervention.Price}" />
-                        </StackLayout>
-                    </ViewCell>
+                    <EntryCell Label="Napomena" Text="{Binding SelectedIntervention.Note}" />
 
+                    <EntryCell Label="Cena" Text="{Binding SelectedIntervention.Price}" Keyboard="Numeric" />
+                   
                     <ViewCell>
                         <Button Text="Sačuvaj" Command="{Binding SaveInterventionCommand}" />
                     </ViewCell>

@@ -1,10 +1,6 @@
-﻿using MobileApp.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
-using System.Linq;
-using System.Collections.ObjectModel;
 using Xamarin.Forms.Internals;
 
 namespace MobileApp

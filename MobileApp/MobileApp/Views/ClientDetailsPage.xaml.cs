@@ -1,20 +1,13 @@
 ﻿using CommonServiceLocator;
-using Microsoft.EntityFrameworkCore;
-using MobileApp.Data;
-using MobileApp.Data.Interfaces;
+using MobileApp.Domain_Models;
 using MobileApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Screens
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ClientDetailsPage : ContentPage
 	{ 
 		public ClientDetailsPage(Client client)

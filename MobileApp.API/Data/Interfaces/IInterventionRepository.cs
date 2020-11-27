@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MobileApp.Data.Interfaces
+namespace MobileApp.API.Data.Interfaces
 {
     public interface IInterventionRepository : IBaseRepository<Intervention>
     {
         IEnumerable<Intervention> GetInterventions(int clientId);
-        //void DeleteIntervention(Intervention intervention);
-        //void SaveIntervention(Intervention intervention);
-        //void UpdateIntervention(Intervention intervention);
+        public decimal GetPayedAmmountForCurrentMonth(DateTime dateFrom, DateTime dateTo);     
     }
 }

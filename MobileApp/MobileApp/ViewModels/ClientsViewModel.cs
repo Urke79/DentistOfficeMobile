@@ -1,24 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MobileApp.Data;
-using MobileApp.Data.Interfaces;
+﻿using MobileApp.Domain_Models;
 using MobileApp.Screens;
 using MobileApp.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Core;
 
 namespace MobileApp.ViewModels
 {
     public class ClientsViewModel : BaseViewModel
     {
-        // dependencies 
-        private IBaseRepository<Client> _repository;
+        HttpClient httpClient = new HttpClient();
 
         // Bindable properties
 
@@ -31,11 +28,9 @@ namespace MobileApp.ViewModels
         public ICommand ReportCommand { get; private set; }
         public ICommand SelectClientCommand { get; private set; }
 
-        public ClientsViewModel(IBaseRepository<Client> repository, IPageService pageService)
+        public ClientsViewModel (IPageService pageService)
             : base(pageService)
         {
-            _repository = repository;
-
             // Commands with and without parameter
             AddClientCommand = new Command(AddNewClient);
             ReportCommand = new Command(ShowReport);
@@ -47,13 +42,13 @@ namespace MobileApp.ViewModels
             await PageService.PushAsync(new ReportPage());
         }
 
-        public void RefreshClientList(string searchParameter = null)
+        public async void RefreshClientList(string searchParameter = null)
         {
-            var clients = _repository.GetAll();
+            var clients = await GetClients();
 
             if (searchParameter != null)
             {
-                clients = clients.Where(c => c.Name.ToUpper().Contains(searchParameter.ToUpper()));
+                clients = (List<Client>)clients.Where(c => c.Name.ToUpper().Contains(searchParameter.ToUpper()));
             }
             
             Clients.Clear();
@@ -62,6 +57,13 @@ namespace MobileApp.ViewModels
                 // This is the way you should work with observable collection
                 Clients.Add(item);
             }
+        }
+
+        private async Task<List<Client>> GetClients()
+        {
+            var clients = await httpClient.GetStringAsync(Consts.baseApiUrl + "/api/Client");
+
+            return JsonConvert.DeserializeObject<List<Client>>(clients);
         }
 
         private async void AddNewClient()

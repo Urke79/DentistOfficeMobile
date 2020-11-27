@@ -1,15 +1,10 @@
 using Autofac;
 using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
-using MobileApp.Data;
-using MobileApp.Data.Interfaces;
-using MobileApp.Data.Repositories;
 using MobileApp.Screens;
 using MobileApp.ViewModels;
-using System;
 using Unity;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace MobileApp
 {
@@ -29,15 +24,8 @@ namespace MobileApp
         void InitializeIOCContainer()
         {
             var containerBuilder = new ContainerBuilder();
-           // containerBuilder.RegisterType<ClientRepository>().As<IClientRepository>().SingleInstance();
-            containerBuilder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerLifetimeScope();
-
-
-            containerBuilder.RegisterType<InterventionRepository>().As<IInterventionRepository>().SingleInstance();
-            containerBuilder.RegisterType<ReportRepository>().As<IReportRepository>().SingleInstance();
+         
             containerBuilder.RegisterType<PageService>().As<IPageService>().SingleInstance();
-
-           // containerBuilder.RegisterType<AppDbContext>().InstancePerLifetimeScope();
 
             //ViewModels
             containerBuilder.RegisterType<ClientsViewModel>();

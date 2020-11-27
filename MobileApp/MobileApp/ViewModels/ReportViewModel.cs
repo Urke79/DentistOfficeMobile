@@ -1,7 +1,5 @@
-﻿using MobileApp.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Net.Http;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -9,9 +7,6 @@ namespace MobileApp.ViewModels
 {
     public class ReportViewModel : BaseViewModel
     {
-        // depandencies
-        private IReportRepository _repository { get; set; }
-
         public ICommand ShowPayedAmmountCommand { get; private set; }
 
         public DateTime DateFrom { get; set; } = DateTime.Now;
@@ -38,24 +33,23 @@ namespace MobileApp.ViewModels
             }
         }
 
-        public ReportViewModel(IReportRepository repository, IPageService pageService)
+        public ReportViewModel(IPageService pageService)
             :base(pageService)
         {
-            _repository = repository;
             ShowPayedAmmountCommand = new Command(ShowPayedAmmount);
         }
 
-        private void ShowPayedAmmount()
+        private async void ShowPayedAmmount()
         {
             if (DateTo < DateFrom)
             {
-                PageService.DisplayAlert("Greška", "Datum do mora biti veći od početnog datuma!", "OK");
+                await PageService.DisplayAlert("Greška", "Datum do mora biti veći od početnog datuma!", "OK");
                 return;
             }
 
-            var payedAmmount = _repository.GetPayedAmmountForCurrentMonth(DateFrom, DateTo);
-            PayedAmmount = "Ukupna zarada: " + payedAmmount.ToString();
-            MyCut = "Moj deo: " + decimal.Multiply(payedAmmount, 0.4M).ToString();
+            var payedAmmount = await new HttpClient().GetStringAsync(Consts.baseApiUrl + "/api/intervention/GetPayedAmmountForCurrentMonth/" + DateFrom.ToString(@"yyyy-MM-dd") + "/" + DateTo.ToString(@"yyyy-MM-dd"));
+            PayedAmmount = "Ukupna zarada: " + payedAmmount;
+            MyCut = "Moj deo: " + decimal.Multiply(decimal.Parse(payedAmmount), 0.4M).ToString();
         }
     }
 }

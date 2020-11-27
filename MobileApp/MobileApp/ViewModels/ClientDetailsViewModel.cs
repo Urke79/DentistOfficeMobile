@@ -1,6 +1,6 @@
-﻿using MobileApp.Data;
-using MobileApp.Data.Interfaces;
-using System;
+﻿using MobileApp.Domain_Models;
+using MobileApp.Helpers;
+using System.Net.Http;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -8,8 +8,7 @@ namespace MobileApp.ViewModels
 {
     public class ClientDetailsViewModel : BaseViewModel
     {
-        // dependencies 
-        private IBaseRepository<Client> _repository;
+        readonly string apiUrl = Consts.baseApiUrl + "/api/client";
 
         // Bindable properties
         private Client _selectedClient;
@@ -28,11 +27,9 @@ namespace MobileApp.ViewModels
         public ICommand DeleteClientCommand { get; private set; }
         public ICommand ShowInterventionsCommand { get; private set; }
 
-        public ClientDetailsViewModel(IBaseRepository<Client> repository, IPageService pageService)
+        public ClientDetailsViewModel(IPageService pageService)
             : base (pageService)
         {
-            _repository = repository;
-
             AddClientCommand = new Command(SaveClient);
             // To disable Delete button, you can't use IsEnabled property of the ToolBarItem
             // There's a complicated logic behind this command that does this
@@ -55,7 +52,8 @@ namespace MobileApp.ViewModels
         {
             if (await PageService.DisplayAlert("Upozorenje", "Da li ste sigurni?", "Da", "Ne"))
             {
-                _repository.DeleteEntity(SelectedClient);
+                DeleteAsync();
+                
                 await PageService.PopAsync();
             }
         }
@@ -75,6 +73,11 @@ namespace MobileApp.ViewModels
             await PageService.PushAsync(new InterventionPage(SelectedClient));
         }
 
+        private async void DeleteAsync()
+        {
+            await HttpHelper.SendRequestAsync(HttpMethod.Delete, apiUrl, SelectedClient);
+        }
+
         private async void SaveClient()
         {
             if (string.IsNullOrEmpty(SelectedClient.Name))
@@ -82,13 +85,14 @@ namespace MobileApp.ViewModels
                 await PageService.DisplayAlert("Greška", "Morate uneti ime pacijenta!", "OK");
                 return;
             }
+
             if (SelectedClient.Id == 0)
             {
-                _repository.SaveEntity(SelectedClient);
+                await HttpHelper.SendRequestAsync(HttpMethod.Post, apiUrl, SelectedClient);
             }
             else
             {
-                _repository.UpdateEntity(SelectedClient);
+                await HttpHelper.SendRequestAsync(HttpMethod.Put, apiUrl, SelectedClient);
             }
 
             // get back to the previous screen

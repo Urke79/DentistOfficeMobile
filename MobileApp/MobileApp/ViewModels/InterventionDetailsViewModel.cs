@@ -1,8 +1,10 @@
-﻿using MobileApp.Data;
-using MobileApp.Data.Interfaces;
+﻿using MobileApp.Domain_Models;
+using MobileApp.Helpers;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -10,8 +12,8 @@ namespace MobileApp.ViewModels
 {
     public class InterventionDetailsViewModel : BaseViewModel
     {
-        // dependencies 
-        private IInterventionRepository _repository;
+        HttpClient httpClient = new HttpClient();
+        readonly string apiUrl = Consts.baseApiUrl + "/api/intervention";
 
         // Bindable properties
         private Intervention _selectedIntervention;
@@ -28,11 +30,9 @@ namespace MobileApp.ViewModels
         public ICommand SaveInterventionCommand { get; private set; }
         public ICommand DeleteInterventionCommand { get; private set; }
 
-        public InterventionDetailsViewModel(IInterventionRepository repository, IPageService pageService)
+        public InterventionDetailsViewModel(IPageService pageService)
             : base(pageService)
         {
-            _repository = repository;
-
             SaveInterventionCommand = new Command(SaveIntervention);
             DeleteInterventionCommand = new Command(DeleteIntervention, DeleteInterventionCanExecute);
         }
@@ -51,22 +51,26 @@ namespace MobileApp.ViewModels
         {
             if (await PageService.DisplayAlert("Upozorenje", "Da li ste sigurni?", "Da", "Ne"))
             {
-                _repository.DeleteEntity(SelectedIntervention);
-
+                DeleteInterventionAsync();
                 // get back to the previous screen
                 await PageService.PopAsync();
             }
+        }
+
+        private async void DeleteInterventionAsync()
+        {
+            await HttpHelper.SendRequestAsync(HttpMethod.Delete, apiUrl, SelectedIntervention);
         }
 
         private async void SaveIntervention()
         {
             if (SelectedIntervention.Id == 0)
             {
-                _repository.SaveEntity(SelectedIntervention);
+                await HttpHelper.SendRequestAsync(HttpMethod.Post, apiUrl, SelectedIntervention);
             }
             else
             {
-                _repository.UpdateEntity(SelectedIntervention);
+                await HttpHelper.SendRequestAsync(HttpMethod.Put, apiUrl, SelectedIntervention);
             }
 
             // get back to the previous screen

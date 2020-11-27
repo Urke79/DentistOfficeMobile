@@ -1,5 +1,5 @@
 ﻿using CommonServiceLocator;
-using MobileApp.Data;
+using MobileApp.Domain_Models;
 using MobileApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

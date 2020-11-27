@@ -1,11 +1,10 @@
-﻿using MobileApp.Data;
-using MobileApp.Data.Interfaces;
+﻿using MobileApp.Domain_Models;
 using MobileApp.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -13,10 +12,6 @@ namespace MobileApp.ViewModels
 {
     public class InterventionsViewModel : BaseViewModel
     {
-
-        // dependencies 
-        private IInterventionRepository _repository;
-
         // Bindable properties
         public ObservableCollection<Intervention> Interventions { get; set; } = new ObservableCollection<Intervention>();
         public ICommand AddInterventionCommand { get; private set; }
@@ -33,11 +28,9 @@ namespace MobileApp.ViewModels
         }
         public Client ContextClient { get; set; }
 
-        public InterventionsViewModel(IInterventionRepository repository, IPageService pageService)
+        public InterventionsViewModel(IPageService pageService)
             : base(pageService)
         {
-            _repository = repository;
-
             AddInterventionCommand = new Command(AddIntervention);
             SelectInterventionCommand = new Command<Intervention>(async intervention => await SelectItem(intervention, i => new InterventionDetailsPage(i)));
         }
@@ -47,9 +40,11 @@ namespace MobileApp.ViewModels
             await PageService.PushAsync(new InterventionDetailsPage(new Intervention() { ClientId = ContextClient.Id, Date = DateTime.Now}));
         }
 
-        public void RefreshInterventionList()
+        public async void RefreshInterventionList()
         {
-            var interventions = _repository.GetInterventions(ContextClient.Id);
+            var response = await new HttpClient().GetStringAsync(Consts.baseApiUrl + "/api/intervention/" + ContextClient.Id);
+
+            var interventions = JsonConvert.DeserializeObject<List<Intervention>>(response);
 
             Interventions.Clear();
             foreach (var item in interventions)

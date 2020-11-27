@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MobileApp.Data.Interfaces;
-using System;
+using MobileApp.API.Data.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace MobileApp.Data.Repositories
+namespace MobileApp.API.Data.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     { 
