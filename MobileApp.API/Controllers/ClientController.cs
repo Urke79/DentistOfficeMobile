@@ -23,7 +23,6 @@ namespace MobileApp.API.Controllers
             _repository = repository;
         }
 
-
         [HttpGet]
         public IEnumerable<Client> GetAll()
         {
